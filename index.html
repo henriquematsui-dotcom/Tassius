@@ -801,6 +801,24 @@ formulario.addEventListener(
 );
 
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPCMFfDv3m51Rfru5Ktbzpfuut9RWXyoM",
+    authDomain: "tassius-tarefas.firebaseapp.com",
+    projectId: "tassius-tarefas",
+    storageBucket: "tassius-tarefas.firebasestorage.app",
+    messagingSenderId: "757014275744",
+    appId: "1:757014275744:web:21f0f4a28c03894c24cbc5",
+    measurementId: "G-HEMT8NZ1YB"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  console.log("Firebase conectado!");
 </script>
 
 
