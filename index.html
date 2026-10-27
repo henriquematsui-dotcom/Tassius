@@ -874,7 +874,13 @@ formulario.addEventListener(
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCPCMFfDv3m51Rfru5Ktbzpfuut9RWXyoM",
@@ -889,9 +895,86 @@ formulario.addEventListener(
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
+  const telaLogin = document.getElementById("telaLogin");
+  const appPrincipal = document.getElementById("appPrincipal");
+  const formLogin = document.getElementById("formLogin");
+  const emailLogin = document.getElementById("emailLogin");
+  const senhaLogin = document.getElementById("senhaLogin");
+  const botaoCadastro = document.getElementById("botaoCadastro");
+  const mensagemLogin = document.getElementById("mensagemLogin");
+
+  // Controla qual tela aparece
+  onAuthStateChanged(auth, (usuario) => {
+    if (usuario) {
+      telaLogin.style.display = "none";
+      appPrincipal.style.display = "block";
+    } else {
+      telaLogin.style.display = "block";
+      appPrincipal.style.display = "none";
+    }
+  });
+
+  // Entrar com e-mail e senha
+  formLogin.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+
+    mensagemLogin.textContent = "Verificando acesso...";
+
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        emailLogin.value.trim(),
+        senhaLogin.value
+      );
+
+      mensagemLogin.textContent = "";
+    } catch (erro) {
+      mensagemLogin.textContent =
+        "Não foi possível entrar. Confira o e-mail e a senha.";
+      console.error(erro);
+    }
+  });
+
+  // Criar uma nova conta
+  botaoCadastro.addEventListener("click", async () => {
+    const email = emailLogin.value.trim();
+    const senha = senhaLogin.value;
+
+    if (!email || !senha) {
+      mensagemLogin.textContent =
+        "Digite seu e-mail e sua senha para criar a conta.";
+      return;
+    }
+
+    if (senha.length < 6) {
+      mensagemLogin.textContent =
+        "A senha precisa ter pelo menos 6 caracteres.";
+      return;
+    }
+
+    mensagemLogin.textContent = "Criando sua conta...";
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, senha);
+
+      mensagemLogin.textContent = "";
+    } catch (erro) {
+      if (erro.code === "auth/email-already-in-use") {
+        mensagemLogin.textContent =
+          "Esse e-mail já está cadastrado. Clique em Entrar.";
+      } else if (erro.code === "auth/invalid-email") {
+        mensagemLogin.textContent =
+          "Digite um endereço de e-mail válido.";
+      } else {
+        mensagemLogin.textContent =
+          "Não foi possível criar a conta. Confira os dados.";
+        console.error(erro);
+      }
+    }
+  });
+
   console.log("Firebase conectado!");
 </script>
-
 
 </body>
 
