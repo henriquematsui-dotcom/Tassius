@@ -8,82 +8,433 @@
 <title>TASSIUS tarefas</title>
 
 <style>
+
+/* =========================
+   CONFIGURAÇÕES GERAIS
+========================= */
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  padding: 24px;
-  font-family: Arial, sans-serif;
-  background: #edf4f2;
+  min-height: 100vh;
+  padding: 30px 16px;
+  font-family: Arial, Helvetica, sans-serif;
+
+  background:
+    radial-gradient(circle at top left, #d9f4eb, transparent 35%),
+    linear-gradient(135deg, #eef7f4, #dcebe7);
+
   color: #173c36;
 }
 
+
+/* =========================
+   CONTAINER PRINCIPAL
+========================= */
+
 main {
-  max-width: 680px;
+  width: 100%;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
+
+  padding: 32px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 20px 50px rgba(23, 60, 54, 0.12);
 }
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.logo {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #176b55;
+
+  border-radius: 18px;
+
+  font-size: 30px;
+
+  box-shadow:
+    0 8px 20px rgba(23, 107, 85, 0.25);
+}
+
+h1 {
+  margin: 0;
+
+  font-size: 32px;
+
+  letter-spacing: -1px;
+}
+
+.subtitulo {
+  margin-top: 8px;
+
+  color: #6b7f79;
+
+  font-size: 15px;
+}
+
+
+/* =========================
+   FORMULÁRIO
+========================= */
 
 form {
-  display: grid;
+  display: flex;
   gap: 10px;
+
+  margin-top: 25px;
 }
 
-input, button {
-  font: inherit;
-  padding: 10px;
+label {
+  display: none;
+}
+
+input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 14px 16px;
+
+  font-size: 16px;
+
+  border: 2px solid #d7e5e1;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+input:focus {
+  border-color: #176b55;
+
+  box-shadow:
+    0 0 0 4px rgba(23, 107, 85, 0.10);
 }
 
 button {
-  background: #176b55;
-  color: white;
-  border: 0;
-  border-radius: 6px;
+  border: none;
+
+  font: inherit;
+
   cursor: pointer;
+
+  transition: 0.2s;
 }
 
+.botao-adicionar {
+  padding: 0 20px;
+
+  background: #176b55;
+
+  color: white;
+
+  border-radius: 12px;
+
+  font-weight: bold;
+}
+
+.botao-adicionar:hover {
+  background: #125642;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   MENSAGEM
+========================= */
+
+#mensagem {
+  min-height: 20px;
+
+  margin: 12px 2px;
+
+  font-size: 14px;
+
+  color: #176b55;
+}
+
+
+/* =========================
+   RESUMO
+========================= */
+
+.resumo-card {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin: 20px 0;
+
+  padding: 16px 18px;
+
+  background: #f1f8f5;
+
+  border: 1px solid #dcebe6;
+
+  border-radius: 14px;
+}
+
+.resumo-titulo {
+  font-weight: bold;
+}
+
+#resumo {
+  margin: 0;
+
+  color: #176b55;
+
+  font-weight: bold;
+}
+
+
+/* =========================
+   LISTA DE TAREFAS
+========================= */
+
 ul {
-  padding: 0;
   list-style: none;
+
+  padding: 0;
+
+  margin: 0;
 }
 
 li {
   display: flex;
+
   align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #b7cdc5;
+
+  gap: 10px;
+
+  margin-top: 12px;
+
+  padding: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce8e4;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 5px 15px rgba(23, 60, 54, 0.05);
+
+  transition: 0.2s;
+}
+
+li:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(23, 60, 54, 0.08);
 }
 
 li span {
   flex: 1;
+
   overflow-wrap: anywhere;
+
+  font-size: 15px;
+}
+
+.concluida {
+  background: #f1f7f4;
 }
 
 .concluida span {
   text-decoration: line-through;
+
+  color: #82918c;
 }
+
+
+/* =========================
+   BOTÕES DAS TAREFAS
+========================= */
+
+.botao-concluir {
+  padding: 8px 12px;
+
+  background: #176b55;
+
+  color: white;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+}
+
+.botao-concluir:hover {
+  background: #125642;
+}
+
+.botao-excluir {
+  padding: 8px 12px;
+
+  background: #f1e6e6;
+
+  color: #a33d3d;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+}
+
+.botao-excluir:hover {
+  background: #ead2d2;
+}
+
+
+/* =========================
+   RÁDIO
+========================= */
 
 #radio {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #b7cdc5;
+  margin-top: 35px;
+
+  padding: 22px;
+
+  background: #102f2a;
+
+  color: white;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 12px 30px rgba(16, 47, 42, 0.18);
 }
 
-#radio img {
-  width: 30px;
-  vertical-align: middle;
-  margin-left: 5px;
+.radio-titulo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin: 0 0 8px;
+
+  font-size: 19px;
 }
 
-@media (max-width: 500px) {
-  body, main {
-    padding: 12px;
+.radio-descricao {
+  margin: 0 0 16px;
+
+  color: #b8d0ca;
+
+  font-size: 13px;
+}
+
+audio {
+  width: 100%;
+}
+
+
+/* =========================
+   RODAPÉ
+========================= */
+
+footer {
+  max-width: 720px;
+
+  margin: 22px auto 0;
+
+  text-align: center;
+
+  color: #647872;
+
+  font-size: 13px;
+}
+
+footer p {
+  margin: 6px;
+}
+
+footer strong {
+  color: #173c36;
+}
+
+.linkedin {
+  display: inline-block;
+
+  margin-top: 8px;
+
+  padding: 9px 18px;
+
+  background: #176b55;
+
+  color: white;
+
+  text-decoration: none;
+
+  border-radius: 20px;
+
+  font-weight: bold;
+
+  transition: 0.2s;
+}
+
+.linkedin:hover {
+  background: #125642;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 15px 10px;
+  }
+
+  main {
+    padding: 22px 16px;
+
+    border-radius: 18px;
+  }
+
+  h1 {
+    font-size: 27px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  .botao-adicionar {
+    padding: 13px;
   }
 
   li {
@@ -93,39 +444,92 @@ li span {
   li span {
     flex-basis: 100%;
   }
+
+  .botao-concluir,
+  .botao-excluir {
+    flex: 1;
+  }
+
 }
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <main>
 
-<h1>TASSIUS tarefas</h1>
 
-<p>Organize seus estudos com uma tarefa por vez.</p>
-<p>
+<!-- CABEÇALHO -->
+
+<header>
+
+  <div class="logo">
+    ✓
+  </div>
+
+  <h1>TASSIUS tarefas</h1>
+
+  <p class="subtitulo">
+    Organize seus estudos com uma tarefa por vez.
+  </p>
+
+</header>
+
+
+<!-- FORMULÁRIO -->
 
 <form id="formulario">
 
-<label for="entrada">Nova TASSIUS tarefa</label>
+  <label for="entrada">
+    Nova tarefa
+  </label>
 
-<input
-  id="entrada"
-  type="text"
-  required
-  maxlength="80"
-  placeholder="Ex.: estudar HTML"
->
+  <input
+    id="entrada"
+    type="text"
+    required
+    maxlength="80"
+    placeholder="O que você precisa fazer?"
+  >
 
-<button type="submit">Adicionar</button>
+  <button
+    type="submit"
+    class="botao-adicionar"
+  >
+    + Adicionar
+  </button>
 
 </form>
 
-<p id="mensagem" role="status"></p>
 
-<p id="resumo">Total: 0 | Concluídas: 0</p>
+<!-- MENSAGEM -->
+
+<p
+  id="mensagem"
+  role="status"
+></p>
+
+
+<!-- RESUMO -->
+
+<div class="resumo-card">
+
+  <span class="resumo-titulo">
+    📋 Minhas tarefas
+  </span>
+
+  <p id="resumo">
+    Total: 0 | Concluídas: 0
+  </p>
+
+</div>
+
+
+<!-- LISTA -->
 
 <ul id="lista"></ul>
 
@@ -134,64 +538,121 @@ li span {
 
 <div id="radio">
 
-<p>
-Esta é minha casa, vai ouvir a minha rádio preferida! 😎 Aproveite!
-</p>
+  <h2 class="radio-titulo">
+    📻 Rádio Metropolitana
+  </h2>
 
-<h2>📻 Rádio Metropolitana</h2>
+  <p class="radio-descricao">
+    Sua rádio enquanto você organiza suas tarefas.
+  </p>
 
-<audio controls autoplay style="width:100%;">
-  <source
-    src="https://sv1.audiostream.com.br:8140/stream?1793130907188"
-    type="audio/mpeg"
+  <audio
+    controls
+    autoplay
   >
 
-  Seu navegador não suporta áudio.
+    <source
+      src="https://sv1.audiostream.com.br:8140/stream?1793130907188"
+      type="audio/mpeg"
+    >
 
-</audio>
+    Seu navegador não suporta áudio.
+
+  </audio>
 
 </div>
 
+
 </main>
+
+
+<!-- RODAPÉ -->
+
+<footer>
+
+  <p>
+    Desenvolvido por
+    <strong>Tassius H. Matsui</strong>
+  </p>
+
+  <a
+    class="linkedin"
+    href="https://www.linkedin.com/in/tassius-henrique-matsui-b8b0473a2/"
+    target="_blank"
+  >
+    🔗 Meu LinkedIn
+  </a>
+
+</footer>
 
 
 <!-- JAVASCRIPT -->
 
 <script>
 
-const formulario = document.getElementById("formulario");
-const entrada = document.getElementById("entrada");
-const lista = document.getElementById("lista");
-const mensagem = document.getElementById("mensagem");
-const resumo = document.getElementById("resumo");
 
+const formulario =
+  document.getElementById("formulario");
+
+const entrada =
+  document.getElementById("entrada");
+
+const lista =
+  document.getElementById("lista");
+
+const mensagem =
+  document.getElementById("mensagem");
+
+const resumo =
+  document.getElementById("resumo");
+
+
+/* =========================
+   ATUALIZAR RESUMO
+========================= */
 
 function atualizarResumo() {
 
   let total = 0;
+
   let concluidas = 0;
+
 
   for (const item of lista.children) {
 
-    total = total + 1;
+    total++;
 
-    if (item.classList.contains("concluida")) {
-      concluidas = concluidas + 1;
+
+    if (
+      item.classList.contains("concluida")
+    ) {
+
+      concluidas++;
+
     }
 
   }
 
+
   resumo.textContent =
     "Total: " + total +
     " | Concluídas: " + concluidas;
+
 }
 
+
+/* =========================
+   ADICIONAR TAREFA
+========================= */
 
 function adicionarTarefa(evento) {
 
   evento.preventDefault();
 
-  const texto = entrada.value.trim();
+
+  const texto =
+    entrada.value.trim();
+
 
   if (texto === "") {
 
@@ -201,122 +662,148 @@ function adicionarTarefa(evento) {
     entrada.focus();
 
     return;
+
   }
 
 
-  const item = document.createElement("li");
+  const item =
+    document.createElement("li");
 
-  const nome = document.createElement("span");
 
-  nome.textContent = texto;
+  const nome =
+    document.createElement("span");
+
+
+  nome.textContent =
+    texto;
+
 
   item.appendChild(nome);
 
 
-  const concluir = document.createElement("button");
+  /* BOTÃO CONCLUIR */
 
-  concluir.textContent = "Concluir";
+  const concluir =
+    document.createElement("button");
 
-  concluir.type = "button";
+
+  concluir.textContent =
+    "✓ Concluir";
 
 
-  concluir.addEventListener("click", function() {
+  concluir.type =
+    "button";
 
-    item.classList.toggle("concluida");
 
-    if (item.classList.contains("concluida")) {
+  concluir.className =
+    "botao-concluir";
 
-      concluir.textContent = "Desfazer";
 
-    } else {
+  concluir.addEventListener(
+    "click",
+    function () {
 
-      concluir.textContent = "Concluir";
+      item.classList.toggle(
+        "concluida"
+      );
+
+
+      if (
+        item.classList.contains("concluida")
+      ) {
+
+        concluir.textContent =
+          "↩ Desfazer";
+
+      } else {
+
+        concluir.textContent =
+          "✓ Concluir";
+
+      }
+
+
+      atualizarResumo();
 
     }
-
-    atualizarResumo();
-
-  });
+  );
 
 
-  const excluir = document.createElement("button");
+  /* BOTÃO EXCLUIR */
 
-  excluir.textContent = "Excluir";
+  const excluir =
+    document.createElement("button");
 
-  excluir.type = "button";
+
+  excluir.textContent =
+    "🗑 Excluir";
 
 
-  excluir.addEventListener("click", function() {
+  excluir.type =
+    "button";
 
-    item.remove();
 
-    atualizarResumo();
+  excluir.className =
+    "botao-excluir";
 
-  });
 
+  excluir.addEventListener(
+    "click",
+    function () {
+
+      item.remove();
+
+      atualizarResumo();
+
+      mensagem.textContent =
+        "Tarefa removida.";
+
+    }
+  );
+
+
+  /* COLOCA OS BOTÕES */
 
   item.appendChild(concluir);
 
   item.appendChild(excluir);
 
+
+  /* COLOCA NA LISTA */
+
   lista.appendChild(item);
 
 
+  /* LIMPA O CAMPO */
+
   entrada.value = "";
+
 
   mensagem.textContent =
     "Tarefa adicionada!";
 
+
   entrada.focus();
+
 
   atualizarResumo();
 
 }
 
 
+/* =========================
+   FORMULÁRIO
+========================= */
+
 formulario.addEventListener(
   "submit",
   adicionarTarefa
 );
 
+
 </script>
+
 
 </body>
 
 </html>
-
-</main>
-
-<footer style="
-  max-width: 680px;
-  margin: 25px auto 0;
-  padding: 18px;
-  text-align: center;
-  border-top: 1px solid #b7cdc5;
-  color: #5d746d;
-  font-size: 14px;
-">
-
-  <p style="margin: 0 0 8px;">
-    Desenvolvido por <strong>Tassius H. Matsui</strong>
-  </p>
-
-  <a
-    href="https://www.linkedin.com/in/tassius-henrique-matsui-b8b0473a2/"
-    target="_blank"
-    style="
-      display: inline-block;
-      padding: 8px 16px;
-      background: #176b55;
-      color: white;
-      text-decoration: none;
-      border-radius: 20px;
-      font-weight: bold;
-    "
-  >
-    🔗 Meu LinkedIn
-  </a>
-
-</footer>
-
-<script>
