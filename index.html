@@ -975,6 +975,20 @@ formulario.addEventListener(
     }
   });
 
+  // Botão para sair da conta
+  const botaoSair = document.getElementById("botaoSair");
+
+  botaoSair.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      mensagemLogin.textContent = "";
+      senhaLogin.value = "";
+    } catch (erro) {
+      console.error("Erro ao sair:", erro);
+      alert("Não foi possível sair da conta. Tente novamente.");
+    }
+  });
+
   console.log("Firebase conectado!");
 </script>
 
