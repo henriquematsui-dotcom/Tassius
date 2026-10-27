@@ -1,2 +1,322 @@
-# Tassius
-Tarefas
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TASSIUS tarefas</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  background: #edf4f2;
+  color: #173c36;
+}
+
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+}
+
+input, button {
+  font: inherit;
+  padding: 10px;
+}
+
+button {
+  background: #176b55;
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #b7cdc5;
+}
+
+li span {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.concluida span {
+  text-decoration: line-through;
+}
+
+#radio {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #b7cdc5;
+}
+
+#radio img {
+  width: 30px;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+@media (max-width: 500px) {
+  body, main {
+    padding: 12px;
+  }
+
+  li {
+    flex-wrap: wrap;
+  }
+
+  li span {
+    flex-basis: 100%;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1>TASSIUS tarefas</h1>
+
+<p>Organize seus estudos com uma tarefa por vez.</p>
+<p>
+
+<form id="formulario">
+
+<label for="entrada">Nova TASSIUS tarefa</label>
+
+<input
+  id="entrada"
+  type="text"
+  required
+  maxlength="80"
+  placeholder="Ex.: estudar HTML"
+>
+
+<button type="submit">Adicionar</button>
+
+</form>
+
+<p id="mensagem" role="status"></p>
+
+<p id="resumo">Total: 0 | Concluídas: 0</p>
+
+<ul id="lista"></ul>
+
+
+<!-- RÁDIO -->
+
+<div id="radio">
+
+<p>
+Esta é minha casa, vai ouvir a minha rádio preferida! 😎 Aproveite!
+</p>
+
+<h2>📻 Rádio Metropolitana</h2>
+
+<audio controls autoplay style="width:100%;">
+  <source
+    src="https://sv1.audiostream.com.br:8140/stream?1793130907188"
+    type="audio/mpeg"
+  >
+
+  Seu navegador não suporta áudio.
+
+</audio>
+
+</div>
+
+</main>
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+const formulario = document.getElementById("formulario");
+const entrada = document.getElementById("entrada");
+const lista = document.getElementById("lista");
+const mensagem = document.getElementById("mensagem");
+const resumo = document.getElementById("resumo");
+
+
+function atualizarResumo() {
+
+  let total = 0;
+  let concluidas = 0;
+
+  for (const item of lista.children) {
+
+    total = total + 1;
+
+    if (item.classList.contains("concluida")) {
+      concluidas = concluidas + 1;
+    }
+
+  }
+
+  resumo.textContent =
+    "Total: " + total +
+    " | Concluídas: " + concluidas;
+}
+
+
+function adicionarTarefa(evento) {
+
+  evento.preventDefault();
+
+  const texto = entrada.value.trim();
+
+  if (texto === "") {
+
+    mensagem.textContent =
+      "Digite uma tarefa válida.";
+
+    entrada.focus();
+
+    return;
+  }
+
+
+  const item = document.createElement("li");
+
+  const nome = document.createElement("span");
+
+  nome.textContent = texto;
+
+  item.appendChild(nome);
+
+
+  const concluir = document.createElement("button");
+
+  concluir.textContent = "Concluir";
+
+  concluir.type = "button";
+
+
+  concluir.addEventListener("click", function() {
+
+    item.classList.toggle("concluida");
+
+    if (item.classList.contains("concluida")) {
+
+      concluir.textContent = "Desfazer";
+
+    } else {
+
+      concluir.textContent = "Concluir";
+
+    }
+
+    atualizarResumo();
+
+  });
+
+
+  const excluir = document.createElement("button");
+
+  excluir.textContent = "Excluir";
+
+  excluir.type = "button";
+
+
+  excluir.addEventListener("click", function() {
+
+    item.remove();
+
+    atualizarResumo();
+
+  });
+
+
+  item.appendChild(concluir);
+
+  item.appendChild(excluir);
+
+  lista.appendChild(item);
+
+
+  entrada.value = "";
+
+  mensagem.textContent =
+    "Tarefa adicionada!";
+
+  entrada.focus();
+
+  atualizarResumo();
+
+}
+
+
+formulario.addEventListener(
+  "submit",
+  adicionarTarefa
+);
+
+</script>
+
+</body>
+
+</html>
+
+</main>
+
+<footer style="
+  max-width: 680px;
+  margin: 25px auto 0;
+  padding: 18px;
+  text-align: center;
+  border-top: 1px solid #b7cdc5;
+  color: #5d746d;
+  font-size: 14px;
+">
+
+  <p style="margin: 0 0 8px;">
+    Desenvolvido por <strong>Tassius H. Matsui</strong>
+  </p>
+
+  <a
+    href="https://www.linkedin.com/in/tassius-henrique-matsui-b8b0473a2/"
+    target="_blank"
+    style="
+      display: inline-block;
+      padding: 8px 16px;
+      background: #176b55;
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: bold;
+    "
+  >
+    🔗 Meu LinkedIn
+  </a>
+
+</footer>
+
+<script>
