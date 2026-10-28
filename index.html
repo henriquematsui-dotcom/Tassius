@@ -1057,7 +1057,12 @@ botaoCadastro.addEventListener("click", async () => {
     mensagemLogin.textContent = "Criando sua conta...";
 
     try {
-      await createUserWithEmailAndPassword(auth, email, senha);
+     const credencial = await createUserWithEmailAndPassword(auth, email, senha);
+       
+       await set(ref(db, "usuarios/" + credencial.user.uid), {
+  nome: nome,
+  email: email
+});
 
       mensagemLogin.textContent = "";
     } catch (erro) {
