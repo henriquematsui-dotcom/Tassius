@@ -918,7 +918,20 @@ import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/fi
 
   console.log("Tarefa salva no Firebase!");
    }
+window.carregarTarefasFirebase = function() {
+  const usuario = auth.currentUser;
 
+  if (!usuario) {
+    console.log("Nenhum usuário conectado para carregar tarefas.");
+    return;
+  }
+
+  const tarefasRef = ref(db, "tarefas/" + usuario.uid);
+
+  onValue(tarefasRef, (snapshot) => {
+    console.log("Tarefas carregadas do Firebase:", snapshot.val());
+  });
+};
   const telaLogin = document.getElementById("telaLogin");
   const appPrincipal = document.getElementById("appPrincipal");
   const formLogin = document.getElementById("formLogin");
@@ -932,6 +945,9 @@ import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/fi
     if (usuario) {
       telaLogin.style.display = "none";
       appPrincipal.style.display = "block";
+       
+        window.carregarTarefasFirebase();
+       
     } else {
       telaLogin.style.display = "block";
       appPrincipal.style.display = "none";
