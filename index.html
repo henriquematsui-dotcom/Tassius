@@ -995,17 +995,19 @@ onAuthStateChanged(auth, (usuario) => {
     // IDENTIFICAÇÃO DO USUÁRIO CONECTADO
     const elementoUsuario = document.getElementById("usuarioConectado");
 
-    if (elementoUsuario) {
-      const email = (usuario.email || "").toLowerCase();
+   if (elementoUsuario) {
+  const usuarioRef = ref(db, "usuarios/" + usuario.uid);
 
-      if (email === "tassius_h@hotmail.com") {
-        elementoUsuario.textContent = "Bem-vindo, Tassius!";
-      } else if (email === "karineonesimo_marino@outlook.com") {
-        elementoUsuario.textContent = "Bem-vinda, Karine!";
-      } else {
-        elementoUsuario.textContent = "Bem-vindo(a)!";
-      }
+  onValue(usuarioRef, (snapshot) => {
+    const dadosUsuario = snapshot.val();
+
+    if (dadosUsuario && dadosUsuario.nome) {
+      elementoUsuario.textContent = "Bem-vindo(a), " + dadosUsuario.nome + "!";
+    } else {
+      elementoUsuario.textContent = "Bem-vindo(a)!";
     }
+  });
+}
 
     telaLogin.style.display = "none";
     appPrincipal.style.display = "block";
