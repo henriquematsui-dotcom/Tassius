@@ -843,24 +843,20 @@ function adicionarTarefa(evento) {
   /* COLOCA NA LISTA */
 
   lista.appendChild(item);
-
+if (window.salvarTarefaFirebase) {
+  window.salvarTarefaFirebase(texto);
+}
 
   /* LIMPA O CAMPO */
 
-  entrada.value = "";
+ entrada.value = "";
 
+mensagem.textContent =
+  "Tarefa adicionada!";
 
-  mensagem.textContent =
-    "Tarefa adicionada!";
+entrada.focus();
 
-
-  entrada.focus();
-
-
-  atualizarResumo();
-
-}
-
+atualizarResumo();
 
 /* =========================
    FORMULÁRIO
@@ -875,8 +871,8 @@ formulario.addEventListener(
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-   import { getDatabase } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
-
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+   
  import {
     getAuth,
     signInWithEmailAndPassword,
@@ -900,6 +896,25 @@ formulario.addEventListener(
    const db = getDatabase(app);
    
    console.log("Realtime Database conectado!");
+   
+   window.salvarTarefaFirebase = async function(texto) {
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    console.log("Nenhum usuário conectado.");
+    return;
+  }
+
+  const tarefasRef = ref(db, "tarefas/" + usuario.uid);
+  const novaTarefaRef = push(tarefasRef);
+
+  await set(novaTarefaRef, {
+    texto: texto,
+    concluida: false,
+    criadaEm: Date.now()
+  });
+
+  console.log("Tarefa salva no Firebase!");
 
   const telaLogin = document.getElementById("telaLogin");
   const appPrincipal = document.getElementById("appPrincipal");
