@@ -986,6 +986,13 @@ window.carregarTarefasFirebase = function() {
   // Controla qual tela aparece
   onAuthStateChanged(auth, (usuario) => {
     if (usuario) {
+       // IDENTIFICAÇÃO DO USUÁRIO CONECTADO
+    const elementoUsuario = document.getElementById("usuarioConectado");
+
+    if (elementoUsuario) {
+      elementoUsuario.textContent =
+        "Conta conectada: " + (usuario.email || "Usuário autenticado");
+    }
       telaLogin.style.display = "none";
       appPrincipal.style.display = "block";
        
