@@ -929,7 +929,45 @@ window.carregarTarefasFirebase = function() {
   const tarefasRef = ref(db, "tarefas/" + usuario.uid);
 
   onValue(tarefasRef, (snapshot) => {
-    console.log("Tarefas carregadas do Firebase:", snapshot.val());
+    lista.innerHTML = "";
+
+    const tarefas = snapshot.val();
+
+    if (tarefas) {
+      Object.entries(tarefas).forEach(([id, tarefa]) => {
+        const item = document.createElement("li");
+        const nome = document.createElement("span");
+
+        nome.textContent = tarefa.texto;
+        item.appendChild(nome);
+
+        const concluir = document.createElement("button");
+
+        concluir.textContent = tarefa.concluida
+          ? "↩ Desfazer"
+          : "✓ Concluir";
+
+        concluir.type = "button";
+        concluir.className = "botao-concluir";
+
+        if (tarefa.concluida) {
+          item.classList.add("concluida");
+        }
+
+        item.appendChild(concluir);
+
+        const excluir = document.createElement("button");
+
+        excluir.textContent = "🗑 Excluir";
+        excluir.type = "button";
+        excluir.className = "botao-excluir";
+
+        item.appendChild(excluir);
+        lista.appendChild(item);
+      });
+    }
+
+    atualizarResumo();
   });
 };
   const telaLogin = document.getElementById("telaLogin");
