@@ -483,28 +483,37 @@ footer strong {
 
     <form id="formLogin">
 
-      <label for="emailLogin">
-        E-mail
-      </label>
+     <label for="emailLogin">
+  E-mail
+</label>
 
-      <input
-        id="emailLogin"
-        type="email"
-        placeholder="Digite seu e-mail"
-        required
-      >
+<input
+  id="emailLogin"
+  type="email"
+  placeholder="Digite seu e-mail"
+  required
+>
 
-      <label for="senhaLogin">
-        Senha
-      </label>
+<label for="nomeCadastro">
+  Nome
+</label>
 
-      <input
-        id="senhaLogin"
-        type="password"
-        placeholder="Digite sua senha"
-        required
-      >
+<input
+  id="nomeCadastro"
+  type="text"
+  placeholder="Digite seu nome"
+>
 
+<label for="senhaLogin">
+  Senha
+</label>
+
+<input
+  id="senhaLogin"
+  type="password"
+  placeholder="Digite sua senha"
+  required
+>
       <button
         type="submit"
         class="botao-login"
@@ -1027,11 +1036,12 @@ onAuthStateChanged(auth, (usuario) => {
     }
   });
 
-  // Criar uma nova conta
-  botaoCadastro.addEventListener("click", async () => {
-    const email = emailLogin.value.trim();
-    const senha = senhaLogin.value;
-
+ // Criar uma nova conta
+botaoCadastro.addEventListener("click", async () => {
+  const nome = document.getElementById("nomeCadastro").value.trim();
+  const email = emailLogin.value.trim();
+  const senha = senhaLogin.value;
+   
     if (!email || !senha) {
       mensagemLogin.textContent =
         "Digite seu e-mail e sua senha para criar a conta.";
