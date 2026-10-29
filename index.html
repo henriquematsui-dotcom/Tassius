@@ -1099,7 +1099,11 @@ botaoCadastro.addEventListener("click", async () => {
     const resultado = await createUserWithEmailAndPassword(auth, email, senha);
 
     const usuario = resultado.user;
-
+     
+// =========================
+// DADOS DO USUÁRIO
+// =========================
+     
     // SALVA OS DADOS DO USUÁRIO NO FIREBASE
     const usuarioRef = ref(db, "usuarios/" + usuario.uid);
 
