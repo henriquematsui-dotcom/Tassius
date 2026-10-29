@@ -1038,49 +1038,54 @@ onAuthStateChanged(auth, (usuario) => {
     }
   });
 
- // Criar uma nova conta
+// Criar uma nova conta
 botaoCadastro.addEventListener("click", async () => {
   const nome = document.getElementById("nomeCadastro").value.trim();
   const email = emailLogin.value.trim();
   const senha = senhaLogin.value;
-   
-    if (!email || !senha) {
+
+  if (!nome || !email || !senha) {
+    mensagemLogin.textContent =
+      "Digite seu nome, e-mail e senha para criar a conta.";
+    return;
+  }
+
+  if (senha.length < 6) {
+    mensagemLogin.textContent =
+      "A senha precisa ter pelo menos 6 caracteres.";
+    return;
+  }
+
+  mensagemLogin.textContent = "Criando sua conta...";
+
+  try {
+    const resultado = await createUserWithEmailAndPassword(auth, email, senha);
+
+    const usuario = resultado.user;
+
+    // SALVA OS DADOS DO USUÁRIO NO FIREBASE
+    const usuarioRef = ref(db, "usuarios/" + usuario.uid);
+
+    await set(usuarioRef, {
+      nome: nome,
+      email: email
+    });
+
+    mensagemLogin.textContent = "";
+  } catch (erro) {
+    if (erro.code === "auth/email-already-in-use") {
       mensagemLogin.textContent =
-        "Digite seu e-mail e sua senha para criar a conta.";
-      return;
-    }
-
-    if (senha.length < 6) {
+        "Esse e-mail já está cadastrado. Clique em Entrar.";
+    } else if (erro.code === "auth/invalid-email") {
       mensagemLogin.textContent =
-        "A senha precisa ter pelo menos 6 caracteres.";
-      return;
+        "Digite um endereço de e-mail válido.";
+    } else {
+      mensagemLogin.textContent =
+        "Não foi possível criar a conta. Confira os dados.";
+      console.error(erro);
     }
-
-    mensagemLogin.textContent = "Criando sua conta...";
-
-    try {
-     const credencial = await createUserWithEmailAndPassword(auth, email, senha);
-       
-       await set(ref(db, "usuarios/" + credencial.user.uid), {
-  nome: nome,
-  email: email
+  }
 });
-
-      mensagemLogin.textContent = "";
-    } catch (erro) {
-      if (erro.code === "auth/email-already-in-use") {
-        mensagemLogin.textContent =
-          "Esse e-mail já está cadastrado. Clique em Entrar.";
-      } else if (erro.code === "auth/invalid-email") {
-        mensagemLogin.textContent =
-          "Digite um endereço de e-mail válido.";
-      } else {
-        mensagemLogin.textContent =
-          "Não foi possível criar a conta. Confira os dados.";
-        console.error(erro);
-      }
-    }
-  });
 
   // Botão para sair da conta
   const botaoSair = document.getElementById("botaoSair");
