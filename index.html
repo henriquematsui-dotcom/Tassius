@@ -979,13 +979,22 @@ window.carregarTarefasFirebase = function() {
 
         item.appendChild(concluir);
 
-        const excluir = document.createElement("button");
+       const excluir = document.createElement("button");
 
-        excluir.textContent = "🗑 Excluir";
-        excluir.type = "button";
-        excluir.className = "botao-excluir";
+excluir.textContent = "🗑 Excluir";
+excluir.type = "button";
+excluir.className = "botao-excluir";
 
-        item.appendChild(excluir);
+excluir.addEventListener("click", async function () {
+  const tarefaRef = ref(
+    db,
+    "tarefas/" + usuario.uid + "/" + id
+  );
+
+  await set(tarefaRef, null);
+});
+
+item.appendChild(excluir);
         lista.appendChild(item);
       });
     }
