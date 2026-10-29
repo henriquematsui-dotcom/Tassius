@@ -952,7 +952,7 @@ window.carregarTarefasFirebase = function() {
         nome.textContent = tarefa.texto;
         item.appendChild(nome);
 
-        const concluir = document.createElement("button");
+     const concluir = document.createElement("button");
 
         concluir.textContent = tarefa.concluida
           ? "↩ Desfazer"
@@ -964,6 +964,18 @@ window.carregarTarefasFirebase = function() {
         if (tarefa.concluida) {
           item.classList.add("concluida");
         }
+
+        concluir.addEventListener("click", async function () {
+          const tarefaRef = ref(
+            db,
+            "tarefas/" + usuario.uid + "/" + id
+          );
+
+          await set(tarefaRef, {
+            ...tarefa,
+            concluida: !tarefa.concluida
+          });
+        });
 
         item.appendChild(concluir);
 
