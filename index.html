@@ -611,28 +611,27 @@ footer strong {
 
 </div>
 
-
 <!-- LISTA -->
 
 <ul id="lista"></ul>
 
-
 <!-- RÁDIO -->
+
+<div id="listaRadios"></div>
 
 <div id="radio">
 
-  <h2 class="radio-titulo">
-    📻 Rádio Metropolitana
-  </h2>
+<h2 class="radio-titulo" id="nomeRadio">
+  📻 Rádio Metropolitana
+</h2>
 
   <p class="radio-descricao">
     Sua rádio enquanto você organiza suas tarefas.
   </p>
 
-  <audio
-    controls
-    autoplay
-  >
+ <audio
+  controls
+>
 
     <source
       src="https://sv1.audiostream.com.br:8140/stream?1793130907188"
@@ -641,13 +640,9 @@ footer strong {
 
     Seu navegador não suporta áudio.
 
-</audio>
+  </audio>
 
 </div>
-
-</section>
-
-</main>
 
 <!-- RODAPÉ -->
 
@@ -687,345 +682,35 @@ const mensagem =
 
 const resumo =
   document.getElementById("resumo");
-
-
-/* =========================
-   ATUALIZAR RESUMO
-========================= */
-
-function atualizarResumo() {
-
-  let total = 0;
-
-  let concluidas = 0;
-
-
-  for (const item of lista.children) {
-
-    total++;
-
-
-    if (
-      item.classList.contains("concluida")
-    ) {
-
-      concluidas++;
-
-    }
-
-  }
-
-
-  resumo.textContent =
-    "Total: " + total +
-    " | Concluídas: " + concluidas;
-
-}
-
-
-/* =========================
-   ADICIONAR TAREFA
-========================= */
-
-function adicionarTarefa(evento) {
-
-  evento.preventDefault();
-
-
-  const texto =
-    entrada.value.trim();
-
-
-  if (texto === "") {
-
-    mensagem.textContent =
-      "Digite uma tarefa válida.";
-
-    entrada.focus();
-
-    return;
-
-  }
-
-
-  const item =
-    document.createElement("li");
-
-
-  const nome =
-    document.createElement("span");
-
-
-  nome.textContent =
-    texto;
-
-
-  item.appendChild(nome);
-
-
-  /* BOTÃO CONCLUIR */
-
-  const concluir =
-    document.createElement("button");
-
-
-  concluir.textContent =
-    "✓ Concluir";
-
-
-  concluir.type =
-    "button";
-
-
-  concluir.className =
-    "botao-concluir";
-
-
-  concluir.addEventListener(
-    "click",
-    function () {
-
-      item.classList.toggle(
-        "concluida"
-      );
-
-
-      if (
-        item.classList.contains("concluida")
-      ) {
-
-        concluir.textContent =
-          "↩ Desfazer";
-
-      } else {
-
-        concluir.textContent =
-          "✓ Concluir";
-
-      }
-
-
-      atualizarResumo();
-
-    }
-  );
-
-
-  /* BOTÃO EXCLUIR */
-
-  const excluir =
-    document.createElement("button");
-
-
-  excluir.textContent =
-    "🗑 Excluir";
-
-
-  excluir.type =
-    "button";
-
-
-  excluir.className =
-    "botao-excluir";
-
-
-  excluir.addEventListener(
-    "click",
-    function () {
-
-      item.remove();
-
-      atualizarResumo();
-
-      mensagem.textContent =
-        "Tarefa removida.";
-
-    }
-  );
-
-
-  /* COLOCA OS BOTÕES */
-
-  item.appendChild(concluir);
-
-  item.appendChild(excluir);
-
-
-  /* COLOCA NA LISTA */
-
-  lista.appendChild(item);
-if (window.salvarTarefaFirebase) {
-  window.salvarTarefaFirebase(texto);
-}
-
-  /* LIMPA O CAMPO */
-
- entrada.value = "";
-
-mensagem.textContent =
-  "Tarefa adicionada!";
-
-entrada.focus();
-
-atualizarResumo();
    
-}
-   
-/* =========================
-   FORMULÁRIO
-========================= */
 
-formulario.addEventListener(
-  "submit",
-  adicionarTarefa
-);
-   
 </script>
 
+<script type="module" src="./js/tarefas.js"></script>
+
+<script type="module" src="./js/usuarios.js"></script>
+
+<script type="module" src="./js/tarefas/interface.js"></script>
+
+<script type="module" src="./js/tarefas/formulario.js"></script>
+
+<script type="module" src="./js/radio/radio.js"></script>
+
+<script type="module" src="./js/radio/interface.js"></script>
+
 <script type="module">
-   
-// =========================
-// IMPORTAÇÕES FIREBASE
-// =========================
-   
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
-   
- import {
-    getAuth,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import {
+  auth,
+  db,
+  ref,
+  onValue,
+  onAuthStateChanged
+} from "./js/firebase.js";
 
-// =========================
-// CONFIGURAÇÕES FIREBASE
-// =========================
-   
-  const firebaseConfig = {
-    apiKey: "AIzaSyCPCMFfDv3m51Rfru5Ktbzpfuut9RWXyoM",
-    authDomain: "tassius-tarefas.firebaseapp.com",
-    projectId: "tassius-tarefas",
-    storageBucket: "tassius-tarefas.firebasestorage.app",
-    messagingSenderId: "757014275744",
-    appId: "1:757014275744:web:21f0f4a28c03894c24cbc5",
-    measurementId: "G-HEMT8NZ1YB"
-  };
+import { atualizarResumo } from "./js/tarefas/interface.js";
 
-// =========================
-// CONEXÃO FIREBASE
-// =========================
-   
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-   const db = getDatabase(app);
-   
-   console.log("Realtime Database conectado!");
-   
-   window.salvarTarefaFirebase = async function(texto) {
-  const usuario = auth.currentUser;
-
-  if (!usuario) {
-    console.log("Nenhum usuário conectado.");
-    return;
-  }
-
-  const tarefasRef = ref(db, "tarefas/" + usuario.uid);
-  const novaTarefaRef = push(tarefasRef);
-
-  await set(novaTarefaRef, {
-    texto: texto,
-    concluida: false,
-    criadaEm: Date.now()
-  });
-
-  console.log("Tarefa salva no Firebase!");
-   }
-   
-// =========================
-// TAREFAS
-// =========================
-window.carregarTarefasFirebase = function() {
-  const usuario = auth.currentUser;
-
-  if (!usuario) {
-    console.log("Nenhum usuário conectado para carregar tarefas.");
-    return;
-  }
-
-  const tarefasRef = ref(db, "tarefas/" + usuario.uid);
-
-  onValue(tarefasRef, (snapshot) => {
-    lista.innerHTML = "";
-
-    const tarefas = snapshot.val();
-
-    if (tarefas) {
-      Object.entries(tarefas).forEach(([id, tarefa]) => {
-        const item = document.createElement("li");
-        const nome = document.createElement("span");
-
-        nome.textContent = tarefa.texto;
-        item.appendChild(nome);
-
-     const concluir = document.createElement("button");
-
-        concluir.textContent = tarefa.concluida
-          ? "↩ Desfazer"
-          : "✓ Concluir";
-
-        concluir.type = "button";
-        concluir.className = "botao-concluir";
-
-        if (tarefa.concluida) {
-          item.classList.add("concluida");
-        }
-
-        concluir.addEventListener("click", async function () {
-          const tarefaRef = ref(
-            db,
-            "tarefas/" + usuario.uid + "/" + id
-          );
-
-          await set(tarefaRef, {
-            ...tarefa,
-            concluida: !tarefa.concluida
-          });
-        });
-
-        item.appendChild(concluir);
-
-       const excluir = document.createElement("button");
-
-excluir.textContent = "🗑 Excluir";
-excluir.type = "button";
-excluir.className = "botao-excluir";
-
-excluir.addEventListener("click", async function () {
-  const tarefaRef = ref(
-    db,
-    "tarefas/" + usuario.uid + "/" + id
-  );
-
-  await set(tarefaRef, null);
-});
-
-item.appendChild(excluir);
-        lista.appendChild(item);
-      });
-    }
-
-    atualizarResumo();
-  });
-};
   const telaLogin = document.getElementById("telaLogin");
   const appPrincipal = document.getElementById("appPrincipal");
-  const formLogin = document.getElementById("formLogin");
-  const emailLogin = document.getElementById("emailLogin");
-  const senhaLogin = document.getElementById("senhaLogin");
-  const botaoCadastro = document.getElementById("botaoCadastro");
-  const mensagemLogin = document.getElementById("mensagemLogin");
 
 // =========================
 // CONTROLE DE TELAS
@@ -1064,106 +749,7 @@ onAuthStateChanged(auth, (usuario) => {
   }
 });
    
-// =========================
-// AUTENTICAÇÃO
-// =========================
-  // Entrar com e-mail e senha
-  formLogin.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
 
-    mensagemLogin.textContent = "Verificando acesso...";
-
-    try {
-      await signInWithEmailAndPassword(
-        auth,
-        emailLogin.value.trim(),
-        senhaLogin.value
-      );
-
-      mensagemLogin.textContent = "";
-    } catch (erro) {
-      mensagemLogin.textContent =
-        "Não foi possível entrar. Confira o e-mail e a senha.";
-      console.error(erro);
-    }
-  });
-   
-// =========================
-// CADASTRO
-// =========================
-   
-// Criar uma nova conta
-botaoCadastro.addEventListener("click", async () => {
-  const nome = document.getElementById("nomeCadastro").value.trim();
-  const email = emailLogin.value.trim();
-  const senha = senhaLogin.value;
-
-  if (!nome || !email || !senha) {
-    mensagemLogin.textContent =
-      "Digite seu nome, e-mail e senha para criar a conta.";
-    return;
-  }
-
-  if (senha.length < 6) {
-    mensagemLogin.textContent =
-      "A senha precisa ter pelo menos 6 caracteres.";
-    return;
-  }
-
-  mensagemLogin.textContent = "Criando sua conta...";
-
-  try {
-    const resultado = await createUserWithEmailAndPassword(auth, email, senha);
-
-    const usuario = resultado.user;
-     
-// =========================
-// DADOS DO USUÁRIO
-// =========================
-     
-    // SALVA OS DADOS DO USUÁRIO NO FIREBASE
-    const usuarioRef = ref(db, "usuarios/" + usuario.uid);
-
-    await set(usuarioRef, {
-      nome: nome,
-      email: email
-    });
-
-    mensagemLogin.textContent = "";
-  } catch (erro) {
-    if (erro.code === "auth/email-already-in-use") {
-      mensagemLogin.textContent =
-        "Esse e-mail já está cadastrado. Clique em Entrar.";
-    } else if (erro.code === "auth/invalid-email") {
-      mensagemLogin.textContent =
-        "Digite um endereço de e-mail válido.";
-    } else {
-      mensagemLogin.textContent =
-        "Não foi possível criar a conta. Confira os dados.";
-      console.error(erro);
-    }
-  }
-});
-
-// =========================
-// SAIR DA CONTA
-// =========================
-   
-  // Botão para sair da conta
-  const botaoSair = document.getElementById("botaoSair");
-
-  botaoSair.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-      mensagemLogin.textContent = "";
-      senhaLogin.value = "";
-    } catch (erro) {
-      console.error("Erro ao sair:", erro);
-      alert("Não foi possível sair da conta. Tente novamente.");
-    }
-  });
-
-  console.log("Firebase conectado!");
 </script>
 
 </body>
